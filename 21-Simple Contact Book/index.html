@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contactly</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:,">
+</head>
+<body>
+  <!-- Background glow -->
+  <div class="bg-glow"></div>
+
+  <header class="app-header glass">
+    <h1>Contactly</h1>
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle theme" title="Toggle light / dark">
+        <!-- sun/moon toggled by CSS -->
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      </button>
+    </div>
+  </header>
+  <main class="container">
+    <!-- Profile -->
+    <section class="profile glass">
+      <button id="editProfileBtn" class="icon-btn" title="Edit profile" aria-label="Edit profile">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/><path d="M20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="currentColor"/></svg>
+      </button>
+      <div class="profile-top">
+        <div class="avatar">
+          <img id="profileAvatar" alt="Profile avatar" />
+        </div>
+      </div>
+      <div class="profile-info">
+        <h3 id="profileName">Your Name</h3>
+        <p id="profileEmail">email@example.com</p>
+        <p id="profilePhone">+0000000000</p>
+      </div>
+    </section>
+
+    <!-- Create Contact -->
+    <section class="create glass">
+      <h2>Create contact</h2>
+      <form id="createForm" autocomplete="off">
+        <div class="grid-2">
+          <label>Full name
+            <input id="name" required placeholder="Full name" />
+          </label>
+          <label>Phone number
+            <input id="phone" required placeholder="+213.." />
+          </label>
+          <label>Email address
+            <input id="email" type="email" placeholder="name@mail.com" />
+          </label>
+          <label>Job
+            <input id="job" placeholder="Job title" />
+          </label>
+        </div>
+        <div class="actions">
+          <div class="upload-preview-group">
+            <label class="upload">
+              <input id="photo" type="file" accept="image/*" />
+              <span>Upload image</span>
+            </label>
+            <img id="photoPreview" class="img-preview" src="" alt="Preview" style="display:none;" />
+          </div>
+          <button style="margin-top: 20px;" class="primary" type="submit">Add contact</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Contact Book -->
+   
+  </main>
+
+    <!-- Contact Book -->
+    <section class="book glass">
+      <div class="book-head">
+        <h2> Contact Book (<span id="count">0</span>)</h2>
+        <div class="search-wrapper">
+          <input id="search" class="search" placeholder="Search..." aria-label="Search contacts" />
+          <span class="search-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+        </div>
+      </div>
+      <ul id="list" class="contact-list"></ul>
+      <p id="emptyState" class="empty">Sorry The contact Book is Empty</p>
+    </section>
+  </main>
+
+  <!-- Modals (backdrop blurred) -->
+  <div id="modalBackdrop" class="backdrop"></div>
+
+  <!-- Profile Edit Modal -->
+  <dialog id="profileModal" class="modal glass small">
+    <form id="profileForm" method="dialog">
+      <h3>Edit profile</h3>
+      <label>Full name <input id="p_name" required /></label>
+      <label>Email <input id="p_email" type="email" required /></label>
+      <label>Phone <input id="p_phone" required /></label>
+      <label>Photo
+        <span class="upload-preview-group">
+          <span class="upload">
+            <input id="p_photo" type="file" accept="image/*" />
+            <span>Upload image</span>
+          </span>
+          <img id="pPhotoPreview" class="img-preview" src="" alt="Preview" style="display:none;" />
+        </span>
+      </label>
+      <button type="button" class="ghost modal-close-btn" data-close aria-label="Close">×</button>
+      <div class="modal-actions">
+        <button class="primary" type="submit">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Contact Edit Modal -->
+  <dialog id="contactModal" class="modal glass small">
+    <form id="contactForm" method="dialog">
+      <h3>Edit contact</h3>
+      <input type="hidden" id="c_id" />
+      <label>Full name <input id="c_name" required /></label>
+      <label>Phone <input id="c_phone" required /></label>
+      <label>Photo
+        <span class="upload-preview-group">
+          <span class="upload">
+            <input id="c_photo" type="file" accept="image/*" />
+            <span>Upload image</span>
+          </span>
+          <img id="cPhotoPreview" class="img-preview" src="" alt="Preview" style="display:none;" />
+        </span>
+      </label>
+      <button type="button" class="ghost modal-close-btn" data-close aria-label="Close">×</button>
+      <div class="modal-actions">
+        <button class="primary" type="submit">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Delete Confirm Modal -->
+  <dialog id="confirmModal" class="modal glass tiny">
+    <div class="confirm">
+      <p>Are you sure you want to delete this contact?</p>
+      <div class="modal-actions">
+        <button type="button" class="ghost" data-close>Cancel</button>
+        <button id="confirmDeleteBtn" class="danger" type="button">Delete</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Toasts -->
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+
+  <footer class="app-footer">
+    <small>All Rights Reserved © 2025</small>
+  </footer>
+
+  <script src="javascript/script.js"></script>
+</body>
+</html>

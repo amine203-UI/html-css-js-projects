@@ -1,0 +1,493 @@
+:root{
+ --bg-color1:#e1e1e1;
+ --bg-color2:#3937376b;
+ --aqi1:#d4e157;
+ --aqi2:#ffee58;
+ --aqi3:#ffca28;
+ --aqi4:#ff7043;
+ --aqi5:#ef5350;
+
+
+}
+*{
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+}
+body{
+ min-height: 100vh;
+ background-color: var(--bg-color1);
+ color: #fff; /* make primary text white */
+ font-family: sans-serif;
+ padding: 0 15px;
+}
+
+ .site-footer{
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(12px, 1.8vw, 14px);
+  opacity: 0.9;
+  margin: 24px 0 12px;
+  padding: clamp(6px, 1.2vw, 10px) 0;
+  position: relative;
+  z-index: 1;
+ }
+ 
+/* Force all text in the UI to be white as requested */
+body, body * { color: #fff !important; }
+/* Make form placeholders slightly muted but still white-ish */
+::placeholder{ color: rgba(255,255,255,0.7) !important; }
+input::placeholder, textarea::placeholder{ color: rgba(255,255,255,0.7) !important; }
+
+/* Specific overrides: make only the Highlights title and search button/icon black */
+/* Targets the h2 that sits inside the right column (Today's Highlights) */
+.weather__right > h2 { color: #000 !important; margin-top: 32px !important; margin-bottom: 16px !important; }
+/* Search button text and its icon (in header) should be black */
+.header #searchBtn, .header #searchBtn i { color: #000 !important; }
+/* Full-viewport decorative background */
+.bg-city{
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  object-fit: cover;
+  filter: saturate(0.95) contrast(1.05) blur(6px);
+  transform: translateZ(0);
+  opacity: 0.95;
+}
+/* make content appear above the background */
+.container, .weather__data, .header, .card{
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px){
+  .bg-city{ filter: blur(8px) saturate(0.85); }
+}
+
+ 
+/* subtle glass-like sheen inside the clipped skyline (if SVG uses rect overlay) */
+.bg-city rect{
+  mix-blend-mode: overlay;
+}
+
+hr{
+ margin-bottom: 10px;
+}
+
+.header{
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-color2); /* match card background */
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 15px 16px; /* add horizontal padding */
+}
+
+.weather__input{display:flex;gap:10px;align-items:center}
+
+.header #city_input{
+  background: rgba(0,0,0,0.35);
+  border: 1.2px solid rgba(255,255,255,0.60);
+  color: #fff;
+  padding: 13px 18px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 24px;
+  width: 260px;
+  transition: box-shadow 180ms ease, transform 120ms ease, border-color 120ms ease, background-color 120ms ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 18px rgba(0,0,0,0.22);
+  backdrop-filter: blur(8px) saturate(1.04);
+}
+.header #city_input::placeholder{ color: rgba(255,255,255,0.92) !important; letter-spacing: .2px; }
+.header #city_input:focus{
+  outline: none;
+  border-color: rgba(255,255,255,0.85);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.25), 0 10px 28px rgba(8,10,18,0.22);
+  transform: translateY(-1px);
+  background: rgba(0,0,0,0.42);
+}
+
+.header #searchBtn{
+  border: none;
+  font-size: 15px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  background: linear-gradient(180deg,#ffffff,#f0f0f0);
+  color: #111;
+  box-shadow: 0 8px 20px rgba(8,10,18,0.08);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.header #searchBtn:hover{transform: translateY(-2px); box-shadow: 0 12px 30px rgba(8,10,18,0.12)}
+.header #searchBtn:active{transform: translateY(0); box-shadow: 0 6px 14px rgba(8,10,18,0.06)}
+
+.header #locationBtn{
+  border: none;
+  font-size: 15px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  background: linear-gradient(180deg,#ff9800,#ffd54f); /* orange -> yellow */
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(255,165,0,0.12);
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+.header #locationBtn:hover{filter:brightness(0.96); transform: translateY(-2px)}
+.header #locationBtn:active{transform: translateY(0); filter:brightness(0.92)}
+
+
+.card{
+ background-color: var(--bg-color2);
+ padding: 15px;
+ border-radius: 15px;
+ margin-bottom: 15px;
+ & p{
+  font-size: 14px;
+  color:#999;
+ }
+ & h2{
+  font-size: 32px;
+  font-weight: 500;
+ }
+}
+.weather__data{
+ display: grid;
+ grid-template-columns: repeat(4,1fr);
+ gap: 12px;
+ & .weather__left{
+  grid-column: span 1;
+  & .current__weather{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & h2{
+     margin: 7px 0;
+    }
+    & p{
+     color: #fff;
+    }
+  }
+  &.card__footer p{
+   font-size: 14px;
+   margin-bottom: 12px;
+  }
+  & .forecast__item{
+   display: grid;
+   grid-template-columns: repeat(3,1fr);
+   place-items: center;
+   margin-bottom: 15px;
+    & .icon__wrapper{
+    display: flex;
+    align-items: center;
+   }
+  }
+ }
+ & .weather__right{
+  grid-column: span 3;
+  & h2{
+   margin-bottom: 10px;
+  }
+  & .highlights{
+   display: grid;
+   grid-template-columns: repeat(4,1fr);
+   column-gap: 15px;
+   & .card:nth-of-type(1),
+   & .card:nth-of-type(2){
+    grid-column: span 2;
+   }
+   & .card__head{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    & .air__index{
+     color: #000;
+     padding: 5px 10px ;
+     border-radius: 15px;
+    }
+    & .aqi-1{
+      background-color: var(--aqi1);
+     }
+     & .aqi-2{
+      background-color: var(--aqi2);
+     }
+     & .aqi-3{
+      background-color: var(--aqi3);
+     }
+     & .aqi-4{
+      background-color: var(--aqi4);
+     }
+     & .aqi-5{
+      background-color: var(--aqi5);
+     }
+   }
+   & .air__indices{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    place-items: center;
+    & i{
+     font-size: 40px;
+    }
+    & p{
+     text-align: center;
+    }
+   }
+    & .sunrise__sunset{
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      & .item{
+       display: flex;
+       align-items: center;
+       gap: 10px;
+       & .icon{
+         font-size: 40px;
+       }
+       & h2{
+         margin-top: 15px;
+       }
+       
+      }
+    }
+    & .card__item{
+    display: flex;
+    justify-content: space-between;
+    & i{
+      font-size: 40px;
+    }
+    }
+  }
+  & .hourly__forecast{
+   display: grid;
+   direction: column;
+   grid-template-columns: repeat(8,1fr);
+   column-gap: 10px;
+   & .card{
+    text-align: center;
+   }
+  }
+ }
+}
+
+
+@media(max-width:1100px){
+ .weather__data{
+  grid-template-columns: repeat(3,1fr);
+    & .weather__right{
+     grid-column: span 2;
+     & .highlights{
+       grid-template-columns: repeat(3,1fr);
+       & .card:ntd-of-type(1){
+        grid-column: span 3;
+       }
+     }
+     & .hourly__forecast{
+       grid-template-columns: repeat(6,1fr);
+     }
+    }
+ }
+}
+
+@media (max-width:1040px){
+  .weather__data{
+    grid-template-columns: repeat(2,1fr);
+    & .weather__right{
+     grid-column: span 1;
+     & .highlights{
+       grid-template-columns: repeat(2,1fr);
+       & .card:nth-of-type(1){
+         grid-column: span 2;
+       }
+     }
+     & .hourly__forecast{
+       grid-template-columns: repeat(4,1fr);
+     }
+    }
+  }
+}
+
+
+@media(max-width:992px){
+  .weather__data .weather__right .weather__left{
+   & .card{
+    grid-column: span 2;
+   }
+   & .air__indices{
+     grid-template-columns: repeat(3,1fr);
+   }
+  }
+}
+
+
+@media (max-width:850px){
+ .weather__data{
+  .header input[type="text"], .header #city_input{width:100%}
+  /* smaller top spacing on narrow screens */
+  .weather__right > h2 { margin-top: 12px !important; }
+  & .weather__right .highlights{
+   & .card:ntd-of-type(1),
+   & .card:ntd-of-type(2),
+   & .card:ntd-of-type(3),
+   & .card:ntd-of-type(4),
+   & .card:ntd-of-type(5),
+   & .card:ntd-of-type(26),
+   & .card:ntd-of-type(7){
+     grid-column: span 1;
+   }
+   & .air__indices{
+    grid-template-columns: repeat(5,1fr);
+   }
+  }
+ }
+}
+
+
+@media(max-width:660px){
+ .header{
+  flex-direction: column;
+  & h2{
+   margin-bottom: 8px;
+  }
+  & #city_input, #searchBtn, #locationBtn{
+   width: 100%;
+   margin-bottom: 10px;
+  }
+ }
+}
+
+@media(max-width:580px){
+  .weather__data .weather__right .highlights .air__indices{
+   grid-template-columns: repeat(4,1fr);
+  }
+}
+
+@media(max-width:520px){
+  .weather__data .weather__right .highlights{
+   & .card:ntd-of-type(3),
+   & .card:ntd-of-type(4),
+   & .card:ntd-of-type(5),
+   & .card:ntd-of-type(26),
+   & .card:ntd-of-type(7){
+     grid-column: span 2;
+   }
+   & .air__indices{
+    grid-template-columns: repeat(3,1fr);
+   }
+  }
+}
+
+
+@media(max-width:480px){
+ .weather__data .weather__right .highlights .sunrise__sunset{
+  grid-template-columns: 1fr;
+ }
+}
+
+@media(max-width:450px){
+  .weather__data .weather__right .hourly__forecast{
+   grid-template-columns: repeat(3,1fr);
+  }
+}
+
+
+@media(max-width:380px){
+ .weather__data .weather__right .highlights .air__indices{
+  grid-template-columns: repeat(2,1fr);
+ }
+}
+
+/* ===== Additional responsive fixes (non-nested, appended) ===== */
+/* Ensure base grids exist even if nested rules are ignored */
+.weather__data{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.weather__left{ grid-column: span 1; }
+.weather__right{ grid-column: span 3; }
+.highlights{ display:grid; grid-template-columns:repeat(4,1fr); column-gap:15px; }
+.highlights .card:nth-of-type(1),
+.highlights .card:nth-of-type(2){ grid-column: span 2; }
+.hourly__forecast{ display:grid; grid-template-columns:repeat(8,1fr); column-gap:10px; }
+.hourly__forecast .card{ text-align:center; }
+
+@media(max-width:1100px){
+  .weather__data{ grid-template-columns:repeat(3,1fr); }
+  .weather__right{ grid-column: span 2; }
+  .highlights{ grid-template-columns:repeat(3,1fr); }
+  .hourly__forecast{ grid-template-columns:repeat(6,1fr); }
+}
+
+@media(max-width:1040px){
+  .weather__data{ grid-template-columns:repeat(2,1fr); }
+  .weather__right{ grid-column: span 1; }
+  .highlights{ grid-template-columns:repeat(2,1fr); }
+  .highlights .card:nth-of-type(1){ grid-column: span 2; }
+  .hourly__forecast{ grid-template-columns:repeat(4,1fr); }
+}
+
+/* Stack left section above right section on small screens */
+@media(max-width:760px){
+  .weather__data{ grid-template-columns:1fr; }
+  .weather__left{ grid-column: auto; order: 1; }
+  .weather__right{ grid-column: auto; order: 2; }
+}
+
+@media(max-width:580px){
+  .highlights .air__indices{ grid-template-columns:repeat(4,1fr); }
+}
+
+@media(max-width:520px){
+  .highlights .card:nth-of-type(3),
+  .highlights .card:nth-of-type(4),
+  .highlights .card:nth-of-type(5),
+  .highlights .card:nth-of-type(6),
+  .highlights .card:nth-of-type(7){ grid-column: span 2; }
+  .highlights .air__indices{ grid-template-columns:repeat(3,1fr); }
+}
+
+@media(max-width:480px){
+  .sunrise__sunset{ grid-template-columns:1fr; }
+}
+
+@media(max-width:450px){
+  .hourly__forecast{ grid-template-columns:repeat(3,1fr); }
+}
+
+/* ===== Enhancements: layout, typography, images ===== */
+/* Constrain content width and keep horizontal padding */
+.container{ max-width:1200px; margin:0 auto; padding-left:8px; padding-right:8px; }
+
+/* Fluid type for headings and base copy */
+h1{ font-size: clamp(22px, 4.2vw, 32px); }
+h2{ font-size: clamp(16px, 3.2vw, 24px); }
+p, button, input{ font-size: clamp(12px, 2.6vw, 16px); }
+
+/* Allow input + buttons to wrap gracefully */
+.weather__input{ flex-wrap: wrap; }
+.header #city_input{ width: min(420px, 100%); }
+
+/* Make images responsive */
+img{ max-width:100%; height:auto; }
+.weather__icon img{ width: clamp(60px, 14vw, 96px); height:auto; }
+
+/* Tighten card padding on small screens */
+@media(max-width:520px){ .card{ padding:12px; } }
+
+/* Adjust grid gaps on narrower viewports for better fit */
+@media(max-width:1040px){ .weather__data{ gap:10px; } }
+@media(max-width:580px){ .weather__data{ gap:8px; } }
+
+/* Very small screens: make hourly forecast horizontally scrollable */
+@media(max-width:380px){
+  .hourly__forecast{ grid-auto-flow: column; grid-auto-columns: 70%; overflow-x:auto; padding-bottom:8px; }
+  .hourly__forecast .card{ min-width:0; }
+}
+
+/* Restore navbar (header) layout on large screens */
+@media(min-width:900px){
+  .weather__input{ flex-wrap: nowrap; }
+  .header #city_input{ width: 260px; }
+}

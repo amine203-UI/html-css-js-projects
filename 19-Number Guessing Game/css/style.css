@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  min-height: 100vh;
+  color: #333;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.game-container {
+  background: #fff;
+  padding: 60px 50px;
+  border-radius: 32px;
+  box-shadow: 0 8px 40px 8px rgba(255, 140, 0, 0.25), 0 2px 16px 0 rgba(0,0,0,0.10);
+  text-align: center;
+  max-width: 700px;
+  width: 100%;
+  animation: fadeIn 0.8s ease;
+  position: relative;
+  z-index: 1;
+  min-height: 450px;
+  font-size: 1.35rem;
+  transition: box-shadow 0.4s, background 0.4s, transform 0.4s;
+}
+
+.game-container:hover {
+  transform: scale(1.04);
+  box-shadow: 0 16px 60px 16px rgba(255, 140, 0, 0.30), 0 4px 24px 0 rgba(0,0,0,0.15);
+}
+
+h1 {
+  margin-bottom: 15px;
+  color: orange;
+}
+
+p {
+  margin: 10px 0;
+}
+
+.input-group {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+input {
+  padding: 12px;
+  width: 70%;
+  border-radius: 8px 0 0 8px;
+  border: 2px solid orange;
+  outline: none;
+  font-size: 16px;
+}
+
+button {
+  padding: 12px 20px;
+  background: orange;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease, background 0.3s;
+}
+
+button:hover {
+  background: #ff9800;
+  transform: scale(1.05);
+}
+
+#restartBtn {
+  margin-top: 20px;
+  background: #2196f3;
+  border-radius: 8px;
+  display: none;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+#restartBtn:hover {
+  background: #1565c0;
+}
+
+#message {
+  font-weight: bold;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+#attempts {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+.footer {
+  width: 100vw;
+  position: static;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  padding: 10px 0;
+}
+
+.footer-text {
+  color: #fff;
+  font-size: 1.1rem;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhance the intro phrase with a divider */
+.game-container h1 + p {
+  position: relative;
+}
+
+.game-container h1 + p::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 50%;
+  margin: 14px auto 0;
+  background: linear-gradient(90deg, transparent, rgba(255,140,0,0.7), transparent);
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .game-container {
+    max-width: 600px;
+    padding: 48px 40px;
+    font-size: 1.2rem;
+  }
+
+  .game-container h1 + p {
+    margin-bottom: 20px;
+  }
+
+  .game-container h1 + p::after {
+    width: 60%;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow: auto;
+    align-items: flex-start;
+    padding: 24px 16px 72px;
+  }
+
+  .game-container {
+    max-width: 520px;
+    padding: 36px 28px;
+    font-size: 1.05rem;
+    border-radius: 24px;
+  }
+
+  .game-container h1 + p {
+    font-size: 1rem;
+    margin-bottom: 18px;
+  }
+
+  .game-container h1 + p::after {
+    width: 70%;
+    height: 2px;
+    margin-top: 12px;
+  }
+
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  input {
+    width: 100%;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
+  .game-container:hover {
+    transform: none;
+    box-shadow: 0 8px 32px 8px rgba(255, 140, 0, 0.22), 0 2px 12px 0 rgba(0,0,0,0.12);
+  }
+
+  .footer-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    max-width: 100%;
+    padding: 28px 20px;
+    min-height: auto;
+    border-radius: 18px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  #message {
+    font-size: 16px;
+  }
+
+  .footer-text {
+    font-size: 0.95rem;
+  }
+}
